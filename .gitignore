@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
+*.tsbuildinfo
+
+# Environment variables (configure in Vercel Project Settings instead)
+.env
+.env.local
+.env.*.local
+
+# Vercel & editor files
+.vercel/
+.DS_Store
+*.log
+
