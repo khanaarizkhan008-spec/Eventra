@@ -87,17 +87,21 @@ function CurtainCard({
   const norm = half > 1 ? wingIndex / (half - 1) - 0.5 : 0;
   const sideMult = isLeft ? -1 : 1;
 
-  const cardWidth = stage.isMobile ? 74 : 110;
-  const cardHeight = stage.isMobile ? 102 : 148;
+  const isCompact = stage.width < 520;
+  const isTablet = stage.width >= 520 && stage.width < 768;
 
-  const archCurve = Math.cos(norm * Math.PI) * (stage.width * 0.025);
+  const cardWidth = isCompact ? 50 : isTablet ? 78 : 110;
+  const cardHeight = isCompact ? 72 : isTablet ? 106 : 148;
+
+  const archCurve =
+    Math.cos(norm * Math.PI) * (stage.width * (isCompact ? 0.014 : isTablet ? 0.02 : 0.025));
   const targetX =
-    sideMult * (stage.width * (stage.isMobile ? 0.36 : 0.37) + archCurve);
-  const targetY = norm * (stage.height * 0.56);
-  const targetRotate = sideMult * (norm * 16);
+    sideMult * (stage.width * (isCompact ? 0.412 : isTablet ? 0.385 : 0.37) + archCurve);
+  const targetY = norm * (stage.height * (isCompact ? 0.48 : isTablet ? 0.52 : 0.56));
+  const targetRotate = sideMult * (norm * (isCompact ? 13 : 16));
 
-  const initialX = sideMult * (wingIndex * 6);
-  const initialY = norm * 12;
+  const initialX = sideMult * (wingIndex * (isCompact ? 4 : 6));
+  const initialY = norm * (isCompact ? 8 : 12);
   const initialRotate = sideMult * (wingIndex * 3.2);
   const stagger = wingIndex * 0.05;
 
@@ -110,9 +114,9 @@ function CurtainCard({
     initialX,
     initialY,
     stagger,
-    burstLiftY: stage.isMobile ? 54 : 88,
-    maxParallaxX: stage.isMobile ? 6 : 16,
-    maxParallaxY: stage.isMobile ? 5 : 14,
+    burstLiftY: isCompact ? 34 : isTablet ? 58 : 88,
+    maxParallaxX: stage.isMobile ? 5 : 16,
+    maxParallaxY: stage.isMobile ? 4 : 14,
   });
   layoutRef.current = {
     cardWidth,
@@ -122,9 +126,9 @@ function CurtainCard({
     initialX,
     initialY,
     stagger,
-    burstLiftY: stage.isMobile ? 54 : 88,
-    maxParallaxX: stage.isMobile ? 6 : 16,
-    maxParallaxY: stage.isMobile ? 5 : 14,
+    burstLiftY: isCompact ? 34 : isTablet ? 58 : 88,
+    maxParallaxX: stage.isMobile ? 5 : 16,
+    maxParallaxY: stage.isMobile ? 4 : 14,
   };
 
   const x = useTransform([progress, pointer.x], ([p, px]: number[]) => {
@@ -180,7 +184,7 @@ function CurtainCard({
             : { scale: 0.98 }
         }
         whileTap={{ scale: 1.03 }}
-        className="group relative h-full w-full overflow-hidden rounded-xl bg-[#141419] shadow-xl shadow-black/50 ring-1 ring-white/15 transition-shadow duration-300 hover:shadow-2xl hover:ring-[#A78BFA]/60"
+        className="group relative h-full w-full overflow-hidden rounded-lg bg-[#141419] shadow-xl shadow-black/50 ring-1 ring-white/15 transition-shadow duration-300 hover:shadow-2xl hover:ring-[#A78BFA]/60 sm:rounded-xl"
       >
         <img
           src={item.src}
@@ -389,22 +393,22 @@ export default function CurtainSplitHero({
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
         className={cn(
-          "relative flex h-[480px] w-full cursor-pointer items-center justify-center bg-transparent text-white select-none sm:h-[520px] md:h-[560px]",
+          "relative flex h-[430px] w-full cursor-pointer items-center justify-center bg-transparent text-white select-none sm:h-[500px] md:h-[560px]",
           stageClassName,
         )}
       >
         {/* Center Headline & Actions */}
         <motion.div
-          className="pointer-events-none relative z-[15] flex max-w-md flex-col items-center px-6 text-center sm:max-w-lg"
+          className="pointer-events-none relative z-[15] -mt-3 flex max-w-[232px] flex-col items-center rounded-3xl bg-[radial-gradient(closest-side,rgba(9,9,11,0.88)_65%,transparent_100%)] px-2 py-2.5 text-center sm:mt-0 sm:max-w-md sm:bg-none sm:px-6 sm:py-0 md:max-w-lg"
           style={{ y: textY, opacity: textOpacity, scale: textScale }}
         >
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#A78BFA]/25 bg-[#A78BFA]/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-[#A78BFA]">
-            <Sparkles className="h-3 w-3" />
-            {eyebrow}
+          <span className="inline-flex max-w-full items-center gap-1 rounded-full border border-[#A78BFA]/25 bg-[#A78BFA]/10 px-2.5 py-0.5 font-mono text-[8.5px] uppercase leading-tight tracking-[0.11em] text-[#A78BFA] sm:gap-1.5 sm:px-3 sm:py-1 sm:text-[10px] sm:tracking-[0.22em]">
+            <Sparkles className="h-2.5 w-2.5 shrink-0 sm:h-3 sm:w-3" />
+            <span>{eyebrow}</span>
           </span>
           <h1
             className={cn(
-              "mt-4 text-3xl font-bold tracking-tight leading-[1.02] text-white sm:text-4xl md:text-5xl",
+              "mt-2.5 text-[22px] font-bold tracking-tight leading-[1.06] text-white sm:mt-4 sm:text-4xl sm:leading-[1.02] md:text-5xl",
               showEditorialSerif && "font-serif font-normal",
             )}
           >
@@ -412,16 +416,16 @@ export default function CurtainSplitHero({
           </h1>
           <motion.div
             style={{ scaleX: lineScale }}
-            className="my-4 h-px w-16 origin-center bg-[#A78BFA]/50 sm:w-20"
+            className="my-2.5 h-px w-10 origin-center bg-[#A78BFA]/50 sm:my-4 sm:w-20"
           />
-          <p className="max-w-[44ch] text-xs leading-relaxed text-[#A1A1AA] sm:text-sm">
+          <p className="max-w-[28ch] text-[11px] leading-[1.45] text-[#A1A1AA] sm:max-w-[44ch] sm:text-sm sm:leading-relaxed">
             {description}
           </p>
 
           {actions && (
             <div
               className={cn(
-                "mt-6 flex flex-wrap items-center justify-center gap-3",
+                "mt-3.5 flex flex-wrap items-center justify-center gap-1.5 sm:mt-6 sm:gap-3",
                 isSpreadActive ? "pointer-events-auto" : "pointer-events-none",
               )}
               onClick={(e) => e.stopPropagation()}
@@ -460,7 +464,7 @@ export default function CurtainSplitHero({
         </motion.div>
 
         {/* Bottom Status Pill Indicator */}
-        <div className="pointer-events-none absolute bottom-4 z-30 flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-[10px] font-medium tracking-wide text-[#A1A1AA] backdrop-blur-sm transition-colors duration-300">
+        <div className="pointer-events-none absolute bottom-3 z-30 flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[9px] font-medium tracking-wide text-[#A1A1AA] backdrop-blur-sm transition-colors duration-300 sm:bottom-4 sm:gap-2 sm:px-3.5 sm:py-1.5 sm:text-[10px]">
           <span
             className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
               isSpreadActive ? "bg-[#A78BFA]" : "bg-amber-400"

@@ -82,11 +82,11 @@ export function HomePage() {
   return (
     <div className="pb-20">
       {/* Interactive Picture-Burst Intro Hero */}
-      <section className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8 lg:pt-10">
+      <section className="mx-auto max-w-7xl px-2 pt-3 sm:px-6 sm:pt-6 lg:px-8 lg:pt-10">
         <CurtainSplitHero
           introDelayMs={2400}
           onBurst={revealNavbar}
-          eyebrow="Eventra • Discover. Register. Experience."
+          eyebrow="Eventra • Campus Events"
           title={
             <>
               Find Your Next
@@ -97,13 +97,22 @@ export function HomePage() {
           description="Discover college events, workshops, hackathons, competitions, and experiences happening around you."
           actions={
             <>
-              <Button size="pill" asChild>
+              <Button
+                size="pill"
+                className="h-8 gap-1 px-3 text-[11px] sm:h-11 sm:gap-2 sm:px-6 sm:text-sm"
+                asChild
+              >
                 <Link to="/events">
                   Explore Events
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
                 </Link>
               </Button>
-              <Button size="pill" variant="secondary" asChild>
+              <Button
+                size="pill"
+                variant="secondary"
+                className="h-8 px-3 text-[11px] sm:h-11 sm:px-6 sm:text-sm"
+                asChild
+              >
                 <Link to="/organizer">Host an Event</Link>
               </Button>
             </>
