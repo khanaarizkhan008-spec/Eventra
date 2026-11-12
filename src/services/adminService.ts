@@ -250,7 +250,7 @@ export async function adminRunReservationExpiry(): Promise<{ expiredCount: numbe
   } catch (err) {
     if ((err instanceof EdgeFunctionError && err.status === 404) || err instanceof TypeError) {
       throw new Error(
-        "Deploy the 'expire-reservations' Supabase Edge Function to run manual reservation expiry sweeps.",
+        "Backend endpoint 'expire-reservations' is unavailable. Deploy the backend server or Edge Functions to run manual reservation expiry sweeps.",
       );
     }
     throw err;

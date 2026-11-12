@@ -6,6 +6,7 @@ import {
   getRegistrationAvailability,
 } from "@/utils/format";
 import { buildGoogleCalendarUrl } from "@/utils/calendar";
+import { getBackendEndpoint } from "@/services/supabase";
 import type { EventRecord } from "@/types/eventra";
 
 const baseEvent: EventRecord = {
@@ -131,6 +132,24 @@ describe("Eventra Fee Disclosure & Availability Rules", () => {
     ).toBe("Row level security blocked (Check policy)");
     expect(getErrorMessage(new Error("Standard error"), "Fallback")).toBe("Standard error");
     expect(getErrorMessage(null, "Fallback")).toBe("Fallback");
+  });
+
+  it("routes backend requests to Render Express /api when VITE_BACKEND_URL is configured", () => {
+    expect(
+      getBackendEndpoint(
+        "create-payment-order",
+        "https://eventra-backend.onrender.com/",
+        "https://proj.supabase.co",
+      ),
+    ).toBe("https://eventra-backend.onrender.com/api/create-payment-order");
+
+    expect(
+      getBackendEndpoint(
+        "create-payment-order",
+        "",
+        "https://proj.supabase.co/",
+      ),
+    ).toBe("https://proj.supabase.co/functions/v1/create-payment-order");
   });
 });
 
