@@ -37,6 +37,8 @@ export interface VerifyPaymentResponse {
   registrationId: string;
   ticketId?: string;
   amount?: number;
+  cashfreeOrderStatus?: string;
+  cashfreePaymentStatus?: string | null;
   message?: string;
 }
 

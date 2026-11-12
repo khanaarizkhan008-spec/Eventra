@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { isSupabaseConfigured, supabase } from "@/services/supabase";
 
 /**
@@ -11,6 +11,9 @@ export function useRealtimeSubscription(
   onChange: () => void,
   filter?: { column: string; value: string },
 ) {
+  const onChangeRef = useRef(onChange);
+  onChangeRef.current = onChange;
+
   useEffect(() => {
     if (!isSupabaseConfigured) return;
 
@@ -26,7 +29,7 @@ export function useRealtimeSubscription(
           ...(filter ? { filter: `${filter.column}=eq.${filter.value}` } : {}),
         },
         () => {
-          onChange();
+          onChangeRef.current();
         },
       );
     }
@@ -36,6 +39,6 @@ export function useRealtimeSubscription(
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [channelKey, onChange, filter?.column, filter?.value, tables.join(",")]);
+  }, [channelKey, filter?.column, filter?.value, tables.join(",")]);
 }
 
